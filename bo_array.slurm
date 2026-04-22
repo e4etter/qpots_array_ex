@@ -11,17 +11,28 @@
 #SBATCH -J qpots_dtlz2_array
 #SBATCH -A akr6198_sc_default
 #SBATCH -p sla-prio
-# Default array range is 10 reps (0-9). To set programmatically at submit time:
-#   REPS=10; sbatch --array=0-$((REPS-1)) bo_array.slurm
-# The submit-time --array value overrides this directive.
-#SBATCH --array=0-2
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=400G
 #SBATCH -t 24:00:00
 #SBATCH --output=logs/%A/%x_%A_%a.out
-#### #SBATCH --error=logs/%A/%x_%A_%a.err
+
+
+##########
+##########
+
+# Default array range is 10 reps (0-9). To set programmatically at submit time:
+#   REPS=10; sbatch --array=0-$((REPS-1)) bo_array.slurm
+# The submit-time --array value overrides this directive.
+
+
+# Currently just using 3 REPS (arrays 0,1,2)
+#SBATCH --array=0-2
+
+##########
+##########
+
 
 set -euo pipefail
 
