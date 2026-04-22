@@ -2,6 +2,7 @@
 
 This document explains how `run_one_rep.py` options influence memory usage and where memory pressure typically appears.
 
+
 ## Where memory is spent
 
 Primary memory consumers in this workflow:
@@ -12,6 +13,7 @@ Primary memory consumers in this workflow:
 4. **Hypervolume partitioning buffers** (diagnostic path in `compute_true_hypervolume`).
 
 The dominant growth pattern comes from repeatedly refitting GPs as the dataset grows.
+
 
 ## Growth model
 
@@ -26,6 +28,7 @@ Stored tensors grow roughly linearly with `N`:
 - `coupled_train_y`: shape `(N, nobj)` in unconstrained runs
 
 Even though these arrays are modest by themselves, GP fitting overhead grows much faster as `N` increases.
+
 
 ## Option-by-option memory impact
 
@@ -53,6 +56,7 @@ Unsupported in current pip-only flow:
 
 - `--use_partial` (raises `NotImplementedError`).
 
+
 ## Practical memory tuning order
 
 If memory is tight:
@@ -65,16 +69,8 @@ If memory is tight:
 
 Then increase Slurm `--mem` only if needed after parameter-side reductions.
 
-## Use `--log_memory` for HV diagnostics
+Note: Use `--log_memory` for hyper-volume (HV) and memory (MEM) diagnostics. These logs help identify whether memory spikes are happening during HV diagnostics versus GP/acquisition steps.
 
-When `--log_memory` is enabled, `compute_true_hypervolume(...)` prints:
-
-- feasible point counts (for constrained cases),
-- tensor shape and approximate tensor MB,
-- a warning when the point set is large,
-- timing for partition + hypervolume compute.
-
-These logs help identify whether memory spikes are happening during HV diagnostics versus GP/acquisition steps.
 
 ## Suggested starting points by objective count
 
@@ -82,10 +78,11 @@ These logs help identify whether memory spikes are happening during HV diagnosti
 - **4-8 objectives**: keep `ntrain` conservative and increase `iters` gradually.
 - **9+ objectives**: expect steeper memory growth; scale slowly and monitor logs.
 
+
 ## OOM troubleshooting checklist
 
 1. Check `.err` for abrupt termination without Python traceback (possible OOM kill).
-2. Re-run with `--log_memory` and inspect `[HV]` diagnostics in `.out`.
+2. Re-run with `--log_memory` and inspect `[HV]` and `[MEM]` diagnostics in `.out`.
 3. Lower `ntrain`, `q`, and `iters` in that order.
 4. Confirm each repetition completes before increasing array width.
 5. Increase `--mem` once parameter tuning no longer meets experiment needs.
