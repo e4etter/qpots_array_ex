@@ -1,6 +1,6 @@
-# Job Array Example (No MPI)
+# qPOTS Job Array Example
 
-This repository runs one optimization repetition per Slurm array task using `run_one_rep.py` and pip-installed `qpots`.
+This repository runs one optimization repetition per Slurm array task using `run_one_rep.py` and pip-installed `qpots` ([repo](https://github.com/csdlpsu/qpots)).
 
 
 ## Layout
@@ -15,7 +15,7 @@ This repository runs one optimization repetition per Slurm array task using `run
 | `scaling_runtime.md` | Runtime behavior and tuning guidance mapped to `run_one_rep.py` options. |
 
 
-## Quick start (RC compute node)
+## Quick Start (On RC Compute Node)
 
 From this directory:
 ```bash
@@ -33,7 +33,7 @@ python -m pip install --no-input botorch==0.12.0 gpytorch==1.13
 python -c "import torch, botorch, gpytorch, pymoo; print('env ok')"
 ```
 
-Install qPOTS (https://github.com/csdlpsu/qpots)
+Install [qPOTS](https://github.com/csdlpsu/qpots)
 ```bash
 pip install qpots
 python -c "import qpots; print('qpots is available')"
@@ -57,14 +57,14 @@ sbatch --array=0-$((REPS-1)) bo_array.slurm
 
 Per repetition `rep`, function `func`, and mode `joint` or `partial`:
 
-- `results/<rep>_<func>_<tag>_train_x.npy`, `_train_y.npy`, `_coupled_y.npy`
-- `results/<rep>_<func>_<tag>_hv.npy`, `_true_hv.npy`, `_times.npy`
-- `results/<rep>_<func>_<tag>_nsga_expansions.npy`, `_non_invertible_count.npy`
+- `results_*/<rep>_<func>_<tag>_train_x.npy`, `_train_y.npy`, `_coupled_y.npy`
+- `results_*/<rep>_<func>_<tag>_hv.npy`, `_true_hv.npy`, `_times.npy`
+- `results_*/<rep>_<func>_<tag>_nsga_expansions.npy`, `_non_invertible_count.npy`
 
 Merge after all tasks succeed:
 
 ```bash
-python merge_results.py --results_dir results --func dtlz2 --tag joint --num_reps 10
+python merge_results.py --results_dir results_<jobid> --func dtlz2 --tag joint --num_reps <num reps>
 ```
 
 ## Core `run_one_rep.py` options
