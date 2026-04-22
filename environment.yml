@@ -1,0 +1,13 @@
+name: qpots-array-env
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - pytorch
+  - botorch
+  - gpytorch
+  - pymoo
