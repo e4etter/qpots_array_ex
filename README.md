@@ -17,6 +17,11 @@ This repository runs one optimization repetition per Slurm array task using `run
 
 ## Quick Start (On RC Compute Node)
 
+```bash
+git clone https://github.com/e4etter/qpots_array_ex.git
+cd qpots_array_ex
+```
+
 From this directory:
 ```bash
 module purge
@@ -28,14 +33,16 @@ conda activate ./env
 
 Install `botorch`:
 ```bash
-CONDA_NO_PLUGINS=true conda --no-plugins env update -p ./env -f environment.yml
 python -m pip install --no-input botorch==0.12.0 gpytorch==1.13
 python -c "import torch, botorch, gpytorch, pymoo; print('env ok')"
 ```
 
 Install [qPOTS](https://github.com/csdlpsu/qpots)
 ```bash
-pip install qpots
+git clone https://github.com/csdlpsu/qpots
+cd qpots
+pip install .
+cd ..
 python -c "import qpots; print('qpots is available')"
 ```
 
